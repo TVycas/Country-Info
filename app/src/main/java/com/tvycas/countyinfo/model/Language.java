@@ -2,9 +2,15 @@ package com.tvycas.countyinfo.model;
 
 import androidx.annotation.NonNull;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Language {
+    @SerializedName(value = "iso639_1")
     private String code2;
+
+    @SerializedName(value = "iso639_2")
     private String code3;
+
     private String name;
     private String nativeName;
 

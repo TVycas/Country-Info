@@ -19,6 +19,6 @@ public interface CountryFullDao {
     @Query("SELECT * FROM country_full")
     LiveData<List<CountryFull>> getAllCountries();
 
-    @Query("SELECT * FROM country_full WHERE name= :name")
+    @Query("SELECT * FROM country_full WHERE name = :name")
     LiveData<CountryFull> getSpecificCountry(String name);
 }

@@ -93,7 +93,7 @@ public class Repository {
                 }
 
                 CountryFull countryFull = response.body().get(0);
-                Log.d(TAG, "onResponse: " + countryFull.getCurrencies().get(0));
+                Log.d(TAG, "onResponse: " + countryFull.getLang());
                 insertFullCountry(countryFull);
             }
 

@@ -2,14 +2,20 @@ package com.tvycas.countyinfo.model;
 
 import androidx.room.Entity;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 
 @Entity(tableName = "country_full")
 public class CountryFull extends CountryBase {
 
     private String nativeName;
-    private String countryCode;
     private ArrayList<Currency> currencies;
+
+    @SerializedName(value = "alpha3Code")
+    private String countryCode;
+
+    @SerializedName(value = "languages")
     private ArrayList<Language> lang;
 
     public CountryFull(ArrayList<Currency> currencies, ArrayList<Language> lang, String name, String countryCode, String capital, int population, String nativeName) {

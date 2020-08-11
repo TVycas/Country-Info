@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         countryViewModel = new ViewModelProvider(this).get(CountryViewModel.class);
-        testAdditionalCall("Lithuania");
+        testAdditionalCall("Russia");
     }
 
     private void testApiCall() {
@@ -46,7 +46,9 @@ public class MainActivity extends AppCompatActivity {
         countryViewModel.getFullCountryInfo(name).observe(this, new Observer<CountryFull>() {
             @Override
             public void onChanged(CountryFull countryFull) {
-//                Log.d(TAG, "onChanged: " + countryFull.getCountryCode());
+                if (countryFull != null) {
+                    Log.d(TAG, "onChanged: " + countryFull.getName());
+                }
             }
         });
     }
