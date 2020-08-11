@@ -8,7 +8,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.tvycas.countyinfo.R;
-import com.tvycas.countyinfo.model.CountrySimple;
+import com.tvycas.countyinfo.model.CountryBase;
+import com.tvycas.countyinfo.model.CountryFull;
 import com.tvycas.countyinfo.viewmodel.CountryViewModel;
 
 import java.util.List;
@@ -26,17 +27,26 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         countryViewModel = new ViewModelProvider(this).get(CountryViewModel.class);
-        testApiCall();
+        testAdditionalCall("Lithuania");
     }
 
     private void testApiCall() {
-        countryViewModel.testApiCall().observe(this, new Observer<List<CountrySimple>>() {
+        countryViewModel.getAllCountries().observe(this, new Observer<List<CountryBase>>() {
             @Override
-            public void onChanged(List<CountrySimple> countrySimples) {
-//                for (CountrySimple countrySimple : countrySimples) {
+            public void onChanged(List<CountryBase> countryBases) {
+//                for (CountryBase countrySimple : countryBases) {
 //                    Log.d(TAG, "onChanged: " + countrySimple.getName());
 //                }
-                Log.d(TAG, "onChanged: " + countrySimples.size());
+                Log.d(TAG, "onChanged: " + countryBases.size());
+            }
+        });
+    }
+
+    private void testAdditionalCall(String name) {
+        countryViewModel.getFullCountryInfo(name).observe(this, new Observer<CountryFull>() {
+            @Override
+            public void onChanged(CountryFull countryFull) {
+//                Log.d(TAG, "onChanged: " + countryFull.getCountryCode());
             }
         });
     }

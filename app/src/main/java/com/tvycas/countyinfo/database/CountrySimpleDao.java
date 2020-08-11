@@ -6,16 +6,16 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
-import com.tvycas.countyinfo.model.CountrySimple;
+import com.tvycas.countyinfo.model.CountryBase;
 
 import java.util.List;
 
 @Dao
-public interface CountryDao {
+public interface CountrySimpleDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long insertCountry(CountrySimple countrySimple);
+    void insertCountry(CountryBase countryBase);
 
-    @Query("SELECT * FROM countries")
-    LiveData<List<CountrySimple>> getAllCountries();
+    @Query("SELECT * FROM country_base")
+    LiveData<List<CountryBase>> getAllCountries();
 }

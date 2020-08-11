@@ -1,6 +1,7 @@
 package com.tvycas.countyinfo.network;
 
-import com.tvycas.countyinfo.model.CountrySimple;
+import com.tvycas.countyinfo.model.CountryBase;
+import com.tvycas.countyinfo.model.CountryFull;
 
 import java.util.List;
 
@@ -10,8 +11,10 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface CountryInfoApiService {
+    @GET("all")
+    Call<List<CountryBase>> getAllCountriesBaseInfo(@Query(value = "fields", encoded = true) String searchFields);
 
-    @GET("{code}")
-    Call<List<CountrySimple>> getCountryInfo(@Path("code") String countryCode,
-                                             @Query(value = "fields", encoded = true) String searchFields);
+    //TODO Remove the list?
+    @GET("name/{fullCountryName}")
+    Call<List<CountryFull>> getFullCountryInfo(@Path("fullCountryName") String name, @Query(value = "fields", encoded = true) String searchFields);
 }

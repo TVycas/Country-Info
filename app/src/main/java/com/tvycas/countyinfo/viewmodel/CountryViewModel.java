@@ -6,7 +6,8 @@ import androidx.hilt.lifecycle.ViewModelInject;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.tvycas.countyinfo.model.CountrySimple;
+import com.tvycas.countyinfo.model.CountryBase;
+import com.tvycas.countyinfo.model.CountryFull;
 import com.tvycas.countyinfo.repository.Repository;
 
 import java.util.List;
@@ -21,7 +22,11 @@ public class CountryViewModel extends ViewModel {
         this.repository = repository;
     }
 
-    public LiveData<List<CountrySimple>> testApiCall() {
+    public LiveData<List<CountryBase>> getAllCountries() {
         return repository.getAllCountries();
+    }
+
+    public LiveData<CountryFull> getFullCountryInfo(String name) {
+        return repository.getFullCountryInfo(name);
     }
 }

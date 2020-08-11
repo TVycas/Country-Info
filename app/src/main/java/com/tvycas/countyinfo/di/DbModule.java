@@ -4,8 +4,9 @@ import android.app.Application;
 
 import androidx.room.Room;
 
-import com.tvycas.countyinfo.database.CountryDao;
 import com.tvycas.countyinfo.database.CountryDb;
+import com.tvycas.countyinfo.database.CountryFullDao;
+import com.tvycas.countyinfo.database.CountrySimpleDao;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -36,7 +37,13 @@ public class DbModule {
 
     @Provides
     @Singleton
-    public static CountryDao providePokeDao(CountryDb countryDb) {
-        return countryDb.countryDao();
+    public static CountrySimpleDao provideCountrySimpleDao(CountryDb countryDb) {
+        return countryDb.countrySimpleDao();
+    }
+
+    @Provides
+    @Singleton
+    public static CountryFullDao provideCountryFullDao(CountryDb countryDb) {
+        return countryDb.countryFullDao();
     }
 }

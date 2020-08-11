@@ -4,8 +4,10 @@ import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
-import com.tvycas.countyinfo.database.CountryDao;
-import com.tvycas.countyinfo.model.CountrySimple;
+import com.tvycas.countyinfo.database.CountryFullDao;
+import com.tvycas.countyinfo.database.CountrySimpleDao;
+import com.tvycas.countyinfo.model.CountryBase;
+import com.tvycas.countyinfo.model.CountryFull;
 import com.tvycas.countyinfo.network.CountryInfoApiService;
 
 import java.util.ArrayList;
@@ -22,52 +24,93 @@ public class Repository {
 
     private static final String TAG = Repository.class.getName();
     private CountryInfoApiService countryInfoApiService;
-    private CountryDao countryDao;
+    private CountrySimpleDao countrySimpleDao;
+    private CountryFullDao countryFullDao;
     private Executor executor;
 
     @Inject
-    public Repository(CountryInfoApiService countryInfoApiService, CountryDao countryDao, Executor executor) {
+    public Repository(CountryInfoApiService countryInfoApiService, CountrySimpleDao countrySimpleDao, CountryFullDao countryFullDao, Executor executor) {
         this.countryInfoApiService = countryInfoApiService;
-        this.countryDao = countryDao;
+        this.countrySimpleDao = countrySimpleDao;
+        this.countryFullDao = countryFullDao;
         this.executor = executor;
     }
 
-    public LiveData<List<CountrySimple>> getAllCountries() {
+    public LiveData<List<CountryBase>> getAllCountries() {
         refreshCountryInfo();
-        return countryDao.getAllCountries();
+        return countrySimpleDao.getAllCountries();
     }
 
     private void refreshCountryInfo() {
-        Call<List<CountrySimple>> call = countryInfoApiService.getCountryInfo("all", "name;capital;population");
+        Call<List<CountryBase>> call = countryInfoApiService.getAllCountriesBaseInfo("name;capital;population");
 
-        call.enqueue(new Callback<List<CountrySimple>>() {
+        call.enqueue(new Callback<List<CountryBase>>() {
             @Override
-            public void onResponse(Call<List<CountrySimple>> call, Response<List<CountrySimple>> response) {
+            public void onResponse(Call<List<CountryBase>> call, Response<List<CountryBase>> response) {
                 if (!response.isSuccessful()) {
                     Log.d(TAG, "onResponse: NOT SUCCESSFUL " + response.code() + " " + call.request().url());
                     return;
                 }
 
-                ArrayList<CountrySimple> countryInfoList = new ArrayList<>(response.body());
-                insertCountriesToDb(countryInfoList);
+                ArrayList<CountryBase> countryInfoList = new ArrayList<>(response.body());
+                insertAllSimpleCountriesToDb(countryInfoList);
             }
 
 
             @Override
-            public void onFailure(Call<List<CountrySimple>> call, Throwable t) {
+            public void onFailure(Call<List<CountryBase>> call, Throwable t) {
                 Log.d(TAG, "onFailure: " + t.getMessage());
 
             }
         });
     }
 
-    private void insertCountriesToDb(ArrayList<CountrySimple> countryInfoList) {
+    private void insertAllSimpleCountriesToDb(ArrayList<CountryBase> countryInfoList) {
         executor.execute(new Runnable() {
             @Override
             public void run() {
-                for (CountrySimple countrySimple : countryInfoList) {
-                    long status = countryDao.insertCountry(countrySimple);
+                for (CountryBase countryBase : countryInfoList) {
+                    countrySimpleDao.insertCountry(countryBase);
                 }
+            }
+        });
+    }
+
+    public LiveData<CountryFull> getFullCountryInfo(String name) {
+        addFullCountryInfo(name);
+        return countryFullDao.getSpecificCountry(name);
+    }
+
+    private void addFullCountryInfo(String name) {
+        Call<List<CountryFull>> call = countryInfoApiService.getFullCountryInfo(name, "name;capital;population;alpha3Code;nativeName;languages;currencies");
+
+        call.enqueue(new Callback<List<CountryFull>>() {
+            @Override
+            public void onResponse(Call<List<CountryFull>> call, Response<List<CountryFull>> response) {
+                if (!response.isSuccessful()) {
+                    Log.d(TAG, "onResponse: NOT SUCCESSFUL " + response.code() + " " + call.request().url());
+                    return;
+                }
+
+                CountryFull countryFull = response.body().get(0);
+                Log.d(TAG, "onResponse: " + countryFull.getCurrencies().get(0));
+                insertFullCountry(countryFull);
+            }
+
+
+            @Override
+            public void onFailure(Call<List<CountryFull>> call, Throwable t) {
+                Log.d(TAG, "onFailure: " + t.getMessage() + " " + call.request().url());
+
+            }
+        });
+    }
+
+    private void insertFullCountry(CountryFull countryFull) {
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                countryFullDao.insertCountry(countryFull);
             }
         });
     }
