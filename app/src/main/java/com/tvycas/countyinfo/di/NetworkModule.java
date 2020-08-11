@@ -19,7 +19,7 @@ public class NetworkModule {
     @Singleton
     public static CountryInfoApiService provideCountryInfoApiService() {
         return new Retrofit.Builder()
-                .baseUrl("https://restcountries.eu/rest/v2/alpha/")
+                .baseUrl("https://restcountries.eu/rest/v2/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(CountryInfoApiService.class);
