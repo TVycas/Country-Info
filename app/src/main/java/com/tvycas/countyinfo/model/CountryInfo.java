@@ -6,8 +6,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-@Entity(tableName = "country_full")
-public class CountryFull extends CountryBase {
+@Entity(tableName = "country_info")
+public class CountryInfo extends CountryBase {
 
     private String nativeName;
     private ArrayList<Currency> currencies;
@@ -18,7 +18,7 @@ public class CountryFull extends CountryBase {
     @SerializedName(value = "languages")
     private ArrayList<Language> lang;
 
-    public CountryFull(ArrayList<Currency> currencies, ArrayList<Language> lang, String name, String countryCode, String capital, int population, String nativeName) {
+    public CountryInfo(ArrayList<Currency> currencies, ArrayList<Language> lang, String name, String countryCode, String capital, int population, String nativeName) {
         super(name, capital, population);
         this.nativeName = nativeName;
         this.countryCode = countryCode;

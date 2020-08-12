@@ -1,7 +1,7 @@
 package com.tvycas.countyinfo.network;
 
 import com.tvycas.countyinfo.model.CountryBase;
-import com.tvycas.countyinfo.model.CountryFull;
+import com.tvycas.countyinfo.model.CountryInfo;
 
 import java.util.List;
 
@@ -16,5 +16,5 @@ public interface CountryInfoApiService {
 
     //TODO Remove the list?
     @GET("name/{fullCountryName}")
-    Call<List<CountryFull>> getFullCountryInfo(@Path("fullCountryName") String name, @Query(value = "fields", encoded = true) String searchFields);
+    Call<List<CountryInfo>> getFullCountryInfo(@Path("fullCountryName") String name, @Query(value = "fields", encoded = true) String searchFields);
 }

@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.tvycas.countyinfo.model.CountryBase;
-import com.tvycas.countyinfo.model.CountryFull;
+import com.tvycas.countyinfo.model.CountryInfo;
 import com.tvycas.countyinfo.repository.Repository;
 
 import java.util.List;
@@ -26,7 +26,7 @@ public class CountryViewModel extends ViewModel {
         return repository.getAllCountries();
     }
 
-    public LiveData<CountryFull> getFullCountryInfo(String name) {
+    public LiveData<CountryInfo> getFullCountryInfo(String name) {
         return repository.getFullCountryInfo(name);
     }
 }

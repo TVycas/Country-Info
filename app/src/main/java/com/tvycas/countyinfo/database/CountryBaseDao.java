@@ -11,7 +11,7 @@ import com.tvycas.countyinfo.model.CountryBase;
 import java.util.List;
 
 @Dao
-public interface CountrySimpleDao {
+public interface CountryBaseDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertCountry(CountryBase countryBase);

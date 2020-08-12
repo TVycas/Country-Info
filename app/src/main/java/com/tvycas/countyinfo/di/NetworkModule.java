@@ -1,5 +1,6 @@
 package com.tvycas.countyinfo.di;
 
+import com.tvycas.countyinfo.network.CountryBoundingBoxApiService;
 import com.tvycas.countyinfo.network.CountryInfoApiService;
 
 import javax.inject.Singleton;
@@ -23,5 +24,15 @@ public class NetworkModule {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(CountryInfoApiService.class);
+    }
+
+    @Provides
+    @Singleton
+    public static CountryBoundingBoxApiService provideCountryBoundingBoxApiService() {
+        return new Retrofit.Builder()
+                .baseUrl("https://nominatim.openstreetmap.org/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+                .create(CountryBoundingBoxApiService.class);
     }
 }

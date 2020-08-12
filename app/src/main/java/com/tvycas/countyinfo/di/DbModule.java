@@ -4,9 +4,9 @@ import android.app.Application;
 
 import androidx.room.Room;
 
+import com.tvycas.countyinfo.database.CountryBaseDao;
 import com.tvycas.countyinfo.database.CountryDb;
-import com.tvycas.countyinfo.database.CountryFullDao;
-import com.tvycas.countyinfo.database.CountrySimpleDao;
+import com.tvycas.countyinfo.database.CountryInfoDao;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -23,8 +23,9 @@ import dagger.hilt.android.components.ApplicationComponent;
 public class DbModule {
 
     @Provides
+    @Singleton
     public static Executor provideDbExecutor() {
-        return Executors.newSingleThreadExecutor();
+        return Executors.newCachedThreadPool();
     }
 
     @Provides
@@ -37,13 +38,13 @@ public class DbModule {
 
     @Provides
     @Singleton
-    public static CountrySimpleDao provideCountrySimpleDao(CountryDb countryDb) {
+    public static CountryBaseDao provideCountrySimpleDao(CountryDb countryDb) {
         return countryDb.countrySimpleDao();
     }
 
     @Provides
     @Singleton
-    public static CountryFullDao provideCountryFullDao(CountryDb countryDb) {
+    public static CountryInfoDao provideCountryFullDao(CountryDb countryDb) {
         return countryDb.countryFullDao();
     }
 }

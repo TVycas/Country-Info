@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.tvycas.countyinfo.R;
 import com.tvycas.countyinfo.model.CountryBase;
-import com.tvycas.countyinfo.model.CountryFull;
+import com.tvycas.countyinfo.model.CountryInfo;
 import com.tvycas.countyinfo.viewmodel.CountryViewModel;
 
 import java.util.List;
@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         countryViewModel = new ViewModelProvider(this).get(CountryViewModel.class);
-        testAdditionalCall("Russia");
+        testAdditionalCall("Portugal");
     }
 
     private void testApiCall() {
@@ -43,11 +43,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void testAdditionalCall(String name) {
-        countryViewModel.getFullCountryInfo(name).observe(this, new Observer<CountryFull>() {
+        countryViewModel.getFullCountryInfo(name).observe(this, new Observer<CountryInfo>() {
             @Override
-            public void onChanged(CountryFull countryFull) {
-                if (countryFull != null) {
-                    Log.d(TAG, "onChanged: " + countryFull.getName());
+            public void onChanged(CountryInfo countryInfo) {
+                if (countryInfo != null) {
+                    Log.d(TAG, "onChanged: " + countryInfo.getLang());
                 }
             }
         });
