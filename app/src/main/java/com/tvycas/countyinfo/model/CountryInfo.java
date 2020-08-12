@@ -1,12 +1,9 @@
 package com.tvycas.countyinfo.model;
 
-import androidx.room.Entity;
-
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-@Entity(tableName = "country_info")
 public class CountryInfo extends CountryBase {
 
     private String nativeName;

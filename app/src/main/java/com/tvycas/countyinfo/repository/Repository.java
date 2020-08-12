@@ -5,7 +5,7 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 
 import com.tvycas.countyinfo.database.CountryBaseDao;
-import com.tvycas.countyinfo.database.CountryInfoDao;
+import com.tvycas.countyinfo.database.CountryInfoWithMapDao;
 import com.tvycas.countyinfo.model.BoundingBox;
 import com.tvycas.countyinfo.model.CountryBase;
 import com.tvycas.countyinfo.model.CountryInfo;
@@ -33,16 +33,16 @@ public class Repository {
     private CountryInfoApiService countryInfoApiService;
     private CountryBoundingBoxApiService countryBoundingBoxApiService;
     private CountryBaseDao countryBaseDao;
-    private CountryInfoDao countryInfoDao;
+    private CountryInfoWithMapDao countryInfoWithMapDao;
     private Executor executor;
 
     @Inject
     public Repository(CountryInfoApiService countryInfoApiService, CountryBoundingBoxApiService countryBoundingBoxApiService,
-                      CountryBaseDao countryBaseDao, CountryInfoDao countryInfoDao, Executor executor) {
+                      CountryBaseDao countryBaseDao, CountryInfoWithMapDao countryInfoWithMapDao, Executor executor) {
         this.countryInfoApiService = countryInfoApiService;
         this.countryBoundingBoxApiService = countryBoundingBoxApiService;
         this.countryBaseDao = countryBaseDao;
-        this.countryInfoDao = countryInfoDao;
+        this.countryInfoWithMapDao = countryInfoWithMapDao;
         this.executor = executor;
     }
 
@@ -85,9 +85,9 @@ public class Repository {
         });
     }
 
-    public LiveData<CountryInfo> getFullCountryInfo(String name) {
+    public LiveData<CountryInfoWithMap> getCountryInfoWithMap(String name) {
         addCountryInfoWithMap(name);
-        return countryInfoDao.getSpecificCountry(name);
+        return countryInfoWithMapDao.getSpecificCountry(name);
     }
 
     private void addCountryInfoWithMap(String name) {
@@ -100,6 +100,8 @@ public class Repository {
                 if (result instanceof Result.Success) {
                     CountryInfoWithMap countryInfoWithMap = ((Result.Success<CountryInfoWithMap>) result).data;
                     Log.d(TAG, "onComplete: " + countryInfoWithMap.getBoundingBox());
+
+                    countryInfoWithMapDao.insertCountry(countryInfoWithMap);
                 } else {
                     //TODO error handling
                     ((Result.Error<CountryInfoWithMap>) result).exception.printStackTrace();
@@ -140,13 +142,13 @@ public class Repository {
         });
     }
 
-    private void insertFullCountry(CountryInfo countryInfo) {
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                long response = countryInfoDao.insertCountry(countryInfo);
-                Log.d(TAG, "run: " + response);
-            }
-        });
-    }
+//    private void insertFullCountry(CountryInfo countryInfo) {
+//        executor.execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                long response = countryInfoWithMapDao.insertCountry(countryInfo);
+//                Log.d(TAG, "run: " + response);
+//            }
+//        });
+//    }
 }

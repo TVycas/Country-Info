@@ -4,6 +4,7 @@ import androidx.room.TypeConverter;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.tvycas.countyinfo.model.BoundingBox;
 import com.tvycas.countyinfo.model.Currency;
 import com.tvycas.countyinfo.model.Language;
 
@@ -36,5 +37,18 @@ public class Converters {
     public static String langFromArrayList(ArrayList<Language> list) {
         Gson gson = new Gson();
         return gson.toJson(list);
+    }
+
+    @TypeConverter
+    public static BoundingBox boundingBoxFromString(String value) {
+        Type listType = new TypeToken<BoundingBox>() {
+        }.getType();
+        return new Gson().fromJson(value, listType);
+    }
+
+    @TypeConverter
+    public static String boundingBoxFromObject(BoundingBox boundingBox) {
+        Gson gson = new Gson();
+        return gson.toJson(boundingBox);
     }
 }

@@ -6,19 +6,19 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
-import com.tvycas.countyinfo.model.CountryInfo;
+import com.tvycas.countyinfo.model.CountryInfoWithMap;
 
 import java.util.List;
 
 @Dao
-public interface CountryInfoDao {
+public interface CountryInfoWithMapDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long insertCountry(CountryInfo countryInfo);
+    void insertCountry(CountryInfoWithMap countryInfo);
 
     @Query("SELECT * FROM country_info")
-    LiveData<List<CountryInfo>> getAllCountries();
+    LiveData<List<CountryInfoWithMap>> getAllCountries();
 
     @Query("SELECT * FROM country_info WHERE name = :name")
-    LiveData<CountryInfo> getSpecificCountry(String name);
+    LiveData<CountryInfoWithMap> getSpecificCountry(String name);
 }

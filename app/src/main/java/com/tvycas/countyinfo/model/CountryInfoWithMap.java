@@ -1,7 +1,10 @@
 package com.tvycas.countyinfo.model;
 
+import androidx.room.Entity;
+
 import java.util.ArrayList;
 
+@Entity(tableName = "country_info")
 public class CountryInfoWithMap extends CountryInfo {
     BoundingBox boundingBox;
 
