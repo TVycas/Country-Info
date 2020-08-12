@@ -6,8 +6,11 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.tvycas.countyinfo.R;
+import com.tvycas.countyinfo.adapters.CountryListAdapter;
 import com.tvycas.countyinfo.model.CountryBase;
 import com.tvycas.countyinfo.model.CountryInfoWithMap;
 import com.tvycas.countyinfo.viewmodel.CountryViewModel;
@@ -20,6 +23,8 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getName();
     private CountryViewModel countryViewModel;
+    private List<CountryBase> countryList;
+    private CountryListAdapter countryListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,18 +33,27 @@ public class MainActivity extends AppCompatActivity {
 
         countryViewModel = new ViewModelProvider(this).get(CountryViewModel.class);
         testAdditionalCall("Portugal");
+
+        setUpRecyclerView();
+        observeCountryList();
     }
 
-    private void testApiCall() {
+    private void observeCountryList() {
         countryViewModel.getAllCountries().observe(this, new Observer<List<CountryBase>>() {
             @Override
-            public void onChanged(List<CountryBase> countryBases) {
-//                for (CountryBase countrySimple : countryBases) {
-//                    Log.d(TAG, "onChanged: " + countrySimple.getName());
-//                }
-                Log.d(TAG, "onChanged: " + countryBases.size());
+            public void onChanged(List<CountryBase> countryBaseList) {
+                Log.d(TAG, "onChanged: Observed " + countryBaseList.size() + " countries");
+                countryList = countryBaseList;
+                countryListAdapter.updateCountryList(countryList);
             }
         });
+    }
+
+    private void setUpRecyclerView() {
+        RecyclerView recyclerView = findViewById(R.id.country_list_recyclerview);
+        countryListAdapter = new CountryListAdapter(this, countryList);
+        recyclerView.setAdapter(countryListAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void testAdditionalCall(String name) {
