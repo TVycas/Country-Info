@@ -29,7 +29,6 @@ import retrofit2.Response;
 public class Repository {
 
     private static final String TAG = Repository.class.getName();
-    //TODO rename?
     private CountryInfoApiService countryInfoApiService;
     private CountryBoundingBoxApiService countryBoundingBoxApiService;
     private CountryBaseDao countryBaseDao;
@@ -99,10 +98,11 @@ public class Repository {
             public void onComplete(Result<CountryInfoWithMap> result) {
                 if (result instanceof Result.Success) {
                     CountryInfoWithMap countryInfoWithMap = ((Result.Success<CountryInfoWithMap>) result).data;
-                    Log.d(TAG, "onComplete: " + countryInfoWithMap.getBoundingBox());
+                    Log.d(TAG, "onComplete: Api response for " + countryInfoWithMap.getName() + " is successful");
                     countryInfoWithMapDao.insertCountry(countryInfoWithMap);
                 } else {
                     //TODO error handling
+                    Log.d(TAG, "onComplete: Api response is not successful");
                     ((Result.Error<CountryInfoWithMap>) result).exception.printStackTrace();
                 }
             }
@@ -119,34 +119,29 @@ public class Repository {
                     Response<List<CountryInfo>> countryInfoResponse = countryInfoCall.execute();
                     Response<List<BoundingBox>> countryBoundingBoxResponse = countryBoundingBoxCall.execute();
 
-                    if (!countryInfoResponse.isSuccessful()) {
-                        Log.d(TAG, "onResponse: CountryInfoResponse is NOT SUCCESSFUL " + countryInfoResponse.code() + " " + countryInfoCall.request().url());
-                        callback.onComplete(new Result.Error<>(new Exception()));
-                        return;
-                    } else if (!countryBoundingBoxResponse.isSuccessful()) {
-                        Log.d(TAG, "onResponse: countryBoundingBoxResponse is NOT SUCCESSFUL " + countryBoundingBoxResponse.code() + " " + countryBoundingBoxCall.request().url());
-                        callback.onComplete(new Result.Error<>(new Exception()));
-                        return;
-                    }
+                    callback.onComplete(getResultOfCountryInfoWithMap(countryInfoResponse, countryBoundingBoxResponse));
 
-                    if (countryInfoResponse.body() == null) {
-                        callback.onComplete(new Result.Error<>(new Exception()));
-                        return;
-                    }
-
-                    CountryInfo countryInfo = countryInfoResponse.body().get(0);
-                    CountryInfoWithMap countryInfoWithMap;
-
-                    if (countryBoundingBoxResponse.body().size() != 0) {
-                        BoundingBox boundingBox = countryBoundingBoxResponse.body().get(0);
-                        countryInfoWithMap = new CountryInfoWithMap(countryInfo, boundingBox);
-                    } else {
-                        countryInfoWithMap = new CountryInfoWithMap(countryInfo, null);
-                    }
-                    callback.onComplete(new Result.Success<>(countryInfoWithMap));
                 } catch (IOException e) {
                     callback.onComplete(new Result.Error<>(e));
                 }
+            }
+
+            private Result<CountryInfoWithMap> getResultOfCountryInfoWithMap(Response<List<CountryInfo>> countryInfoResponse, Response<List<BoundingBox>> countryBoundingBoxResponse) {
+                if (countryInfoResponse.body().size() == 0 || !countryInfoResponse.isSuccessful() || !countryBoundingBoxResponse.isSuccessful()) {
+                    Log.d(TAG, "getResultOfCountryInfoWithMap: One of responses is successful - " + countryInfoResponse.code() + " " + countryBoundingBoxResponse.code());
+                    return new Result.Error<>(new Exception());
+                }
+
+                CountryInfo countryInfo = countryInfoResponse.body().get(0);
+                CountryInfoWithMap countryInfoWithMap;
+
+                if (countryBoundingBoxResponse.body().size() != 0) {
+                    BoundingBox boundingBox = countryBoundingBoxResponse.body().get(0);
+                    countryInfoWithMap = new CountryInfoWithMap(countryInfo, boundingBox);
+                } else {
+                    countryInfoWithMap = new CountryInfoWithMap(countryInfo, null);
+                }
+                return new Result.Success<>(countryInfoWithMap);
             }
         });
     }
