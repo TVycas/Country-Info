@@ -3,6 +3,7 @@ package com.tvycas.countyinfo.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.SearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements CountryListAdapte
     private CountryViewModel countryViewModel;
     private List<CountryBase> countryList;
     private CountryListAdapter countryListAdapter;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,28 @@ public class MainActivity extends AppCompatActivity implements CountryListAdapte
 
         setUpRecyclerView();
         observeCountryList();
+        setUpSearchView();
+    }
+
+    private void setUpSearchView() {
+        SearchView searchView = findViewById(R.id.search_view);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                if (!s.equals("")) {
+                    countryListAdapter.getFilter().filter(s);
+                    recyclerView.scrollToPosition(0);
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                countryListAdapter.getFilter().filter(s);
+                recyclerView.scrollToPosition(0);
+                return false;
+            }
+        });
     }
 
     private void observeCountryList() {
@@ -49,8 +73,8 @@ public class MainActivity extends AppCompatActivity implements CountryListAdapte
     }
 
     private void setUpRecyclerView() {
-        RecyclerView recyclerView = findViewById(R.id.country_list_recyclerview);
-        countryListAdapter = new CountryListAdapter(this, countryList, this);
+        recyclerView = findViewById(R.id.country_list_recyclerview);
+        countryListAdapter = new CountryListAdapter(this, this);
         recyclerView.setAdapter(countryListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -62,15 +86,4 @@ public class MainActivity extends AppCompatActivity implements CountryListAdapte
         intent.putExtra("country_name", countryList.get(position).getName());
         startActivity(intent);
     }
-
-//    private void testAdditionalCall(String name) {
-//        countryViewModel.getCountryInfoWithMap(name).observe(this, new Observer<CountryInfoWithMap>() {
-//            @Override
-//            public void onChanged(CountryInfoWithMap countryInfo) {
-//                if (countryInfo != null) {
-//                    Log.d(TAG, "onChanged: " + countryInfo.getBoundingBox());
-//                }
-//            }
-//        });
-//    }
 }

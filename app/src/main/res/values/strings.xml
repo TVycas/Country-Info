@@ -9,5 +9,6 @@
     <string name="native_name">Native Name: %1$s</string>
     <string name="currency">Currency: %1$s (symbol %2$s)</string>
     <string name="population">Population: %1$d</string>
-    <string name="languages">Language: %1$s</string>
+    <string name="languages">Language(s): %1$s</string>
+    <string name="no_map_info">No location information :(</string>
 </resources>

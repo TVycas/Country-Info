@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,16 +14,50 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.tvycas.countyinfo.R;
 import com.tvycas.countyinfo.model.CountryBase;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class CountryListAdapter extends RecyclerView.Adapter<CountryListAdapter.CountryViewHolder> {
+public class CountryListAdapter extends RecyclerView.Adapter<CountryListAdapter.CountryViewHolder> implements Filterable {
     private LayoutInflater inflater;
     private List<CountryBase> countriesToDisplay;
     private OnCountryListener listener;
+    private List<CountryBase> allCountries;
+    //    private RecyclerView recyclerView;
+    private Filter countryFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<CountryBase> filteredList = new ArrayList<>();
 
-    public CountryListAdapter(Context context, List<CountryBase> countriesToDisplay, OnCountryListener listener) {
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(allCountries);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                // Filter the list of all countries to see if the pattern is in any of the country names
+                for (CountryBase country : allCountries) {
+                    if (country.getName().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(country);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            // Update the displayed offers and refresh the recyclerView
+            countriesToDisplay.clear();
+            countriesToDisplay.addAll((List) filterResults.values);
+            notifyDataSetChanged();
+        }
+    };
+
+    public CountryListAdapter(Context context, OnCountryListener listener) {
         inflater = LayoutInflater.from(context);
-        this.countriesToDisplay = countriesToDisplay;
+//        this.recyclerView = recyclerView;
         this.listener = listener;
     }
 
@@ -50,13 +86,21 @@ public class CountryListAdapter extends RecyclerView.Adapter<CountryListAdapter.
         return countriesToDisplay == null ? 0 : countriesToDisplay.size();
     }
 
-    public void updateCountryList(List<CountryBase> countryList) {
-        countriesToDisplay = countryList;
-        notifyDataSetChanged();
-    }
-
     public interface OnCountryListener {
         void onCountryClick(int position);
+    }
+
+    public void updateCountryList(List<CountryBase> countryList) {
+        if (countryList != null) {
+            this.countriesToDisplay = countryList;
+            allCountries = new ArrayList<>(countryList);
+            notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public Filter getFilter() {
+        return countryFilter;
     }
 
     public class CountryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -77,7 +121,7 @@ public class CountryListAdapter extends RecyclerView.Adapter<CountryListAdapter.
 
         @Override
         public void onClick(View view) {
-            listener.onCountryClick(getAdapterPosition());
+            onCountryListener.onCountryClick(getAdapterPosition());
         }
     }
 }

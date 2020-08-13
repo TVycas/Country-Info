@@ -3,6 +3,7 @@ package com.tvycas.countyinfo.ui;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
@@ -62,11 +63,9 @@ public class CountryInfoActivity extends FragmentActivity implements OnMapReadyC
             countryName = extras.getString("country_name"); // retrieve the data using keyName
         }
 
-        Log.d(TAG, "onCreate: " + countryName);
-
         initGoogleMap(savedInstanceState);
-        viewModel = new ViewModelProvider(this).get(CountryViewModel.class);
 
+        viewModel = new ViewModelProvider(this).get(CountryViewModel.class);
         observeCountryInfo(countryName);
     }
 
@@ -90,36 +89,43 @@ public class CountryInfoActivity extends FragmentActivity implements OnMapReadyC
         currency.setText(getString(R.string.currency, countryInfoWithMap.getCurrency().getName(), countryInfoWithMap.getCurrency().getSymbol()));
         countryCode.setText(getString(R.string.country_code, countryInfoWithMap.getCountryCode()));
         capital.setText(getString(R.string.capital, countryInfoWithMap.getCapital()));
+        languages.setText(getString(R.string.languages, constructLangsString(countryInfoWithMap)));
+    }
 
+    private String constructLangsString(CountryInfoWithMap countryInfoWithMap) {
         StringBuilder sb = new StringBuilder();
         for (Language lang : countryInfoWithMap.getLangs()) {
             sb.append(lang.getName());
             sb.append(", ");
         }
+
         sb.deleteCharAt(sb.length() - 2);
-        String langs = sb.toString();
-        languages.setText(getString(R.string.languages, langs));
+        return sb.toString();
     }
 
     private void moveCameraToCountry(BoundingBox boundingBox) {
-        //Set the camera of the map
-        double minLat = boundingBox.getMinLat();
-        double maxLat = boundingBox.getMaxLat();
-        double minLng = boundingBox.getMinLng();
-        double maxLng = boundingBox.getMaxLng();
+        if (boundingBox != null) {
+            //Set the camera of the map
+            double minLat = boundingBox.getMinLat();
+            double maxLat = boundingBox.getMaxLat();
+            double minLng = boundingBox.getMinLng();
+            double maxLng = boundingBox.getMaxLng();
 
-        LatLng northEast = new LatLng(minLat, minLng);
-        LatLng southWest = new LatLng(maxLat, maxLng);
+            LatLng northEast = new LatLng(minLat, minLng);
+            LatLng southWest = new LatLng(maxLat, maxLng);
 
-        LatLngBounds mMapBoundary = new LatLngBounds(
-                northEast,
-                southWest
-        );
+            LatLngBounds mMapBoundary = new LatLngBounds(
+                    northEast,
+                    southWest
+            );
 
-        int width = getResources().getDisplayMetrics().widthPixels;
-        int height = getResources().getDisplayMetrics().heightPixels;
-        int padding = (int) (width * 0.10); // offset from edges of the map 12% of screen
-        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(mMapBoundary, width, height, padding));
+            int width = getResources().getDisplayMetrics().widthPixels;
+            int height = getResources().getDisplayMetrics().heightPixels;
+            int padding = (int) (width * 0.10); // offset from edges of the map 12% of screen
+            mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(mMapBoundary, width, height, padding));
+        } else {
+            Toast.makeText(this, R.string.no_map_info, Toast.LENGTH_LONG).show();
+        }
     }
 
     private void initGoogleMap(Bundle savedInstanceState) {
