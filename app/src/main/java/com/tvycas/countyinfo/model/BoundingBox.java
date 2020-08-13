@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class BoundingBox {
     @SerializedName(value = "boundingbox")
-    Double[] boundingBox;
+    private Double[] boundingBox;
 
     public BoundingBox(Double[] boundingBox) {
         this.boundingBox = boundingBox;
@@ -16,14 +16,25 @@ public class BoundingBox {
         return boundingBox;
     }
 
-    //TODO
     public Double getMinLat() {
-        return null;
+        return boundingBox[0];
+    }
+
+    public Double getMaxLat() {
+        return boundingBox[1];
+    }
+
+    public Double getMinLng() {
+        return boundingBox[2];
+    }
+
+    public Double getMaxLng() {
+        return boundingBox[3];
     }
 
     @NonNull
     @Override
     public String toString() {
-        return "Min Lat: " + boundingBox[0] + "; Min Lng: " + boundingBox[1] + "; Max Lat: " + boundingBox[2] + "; Max Lng:" + boundingBox[3];
+        return "Min Lat: " + boundingBox[0] + "; Min Lng: " + boundingBox[2] + "; Max Lat: " + boundingBox[1] + "; Max Lng:" + boundingBox[3];
     }
 }

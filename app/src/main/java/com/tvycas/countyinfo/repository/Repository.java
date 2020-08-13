@@ -100,7 +100,6 @@ public class Repository {
                 if (result instanceof Result.Success) {
                     CountryInfoWithMap countryInfoWithMap = ((Result.Success<CountryInfoWithMap>) result).data;
                     Log.d(TAG, "onComplete: " + countryInfoWithMap.getBoundingBox());
-
                     countryInfoWithMapDao.insertCountry(countryInfoWithMap);
                 } else {
                     //TODO error handling
@@ -130,10 +129,20 @@ public class Repository {
                         return;
                     }
 
-                    CountryInfo countryInfo = countryInfoResponse.body().get(0);
-                    BoundingBox boundingBox = countryBoundingBoxResponse.body().get(0);
-                    CountryInfoWithMap countryInfoWithMap = new CountryInfoWithMap(countryInfo, boundingBox);
+                    if (countryInfoResponse.body() == null) {
+                        callback.onComplete(new Result.Error<>(new Exception()));
+                        return;
+                    }
 
+                    CountryInfo countryInfo = countryInfoResponse.body().get(0);
+                    CountryInfoWithMap countryInfoWithMap;
+
+                    if (countryBoundingBoxResponse.body().size() != 0) {
+                        BoundingBox boundingBox = countryBoundingBoxResponse.body().get(0);
+                        countryInfoWithMap = new CountryInfoWithMap(countryInfo, boundingBox);
+                    } else {
+                        countryInfoWithMap = new CountryInfoWithMap(countryInfo, null);
+                    }
                     callback.onComplete(new Result.Success<>(countryInfoWithMap));
                 } catch (IOException e) {
                     callback.onComplete(new Result.Error<>(e));
@@ -141,14 +150,4 @@ public class Repository {
             }
         });
     }
-
-//    private void insertFullCountry(CountryInfo countryInfo) {
-//        executor.execute(new Runnable() {
-//            @Override
-//            public void run() {
-//                long response = countryInfoWithMapDao.insertCountry(countryInfo);
-//                Log.d(TAG, "run: " + response);
-//            }
-//        });
-//    }
 }
