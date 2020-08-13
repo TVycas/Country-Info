@@ -8,14 +8,16 @@ import java.util.ArrayList;
 public class CountryInfoWithMap extends CountryInfo {
     BoundingBox boundingBox;
 
-    public CountryInfoWithMap(ArrayList<Currency> currencies, ArrayList<Language> lang, String name,
+    public CountryInfoWithMap(Currency currency, ArrayList<Language> langs, String name,
                               String countryCode, String capital, int population, String nativeName, BoundingBox boundingBox) {
-        super(currencies, lang, name, countryCode, capital, population, nativeName);
+        super(new ArrayList<Currency>() {{
+            add(currency);
+        }}, langs, name, countryCode, capital, population, nativeName);
         this.boundingBox = boundingBox;
     }
 
     public CountryInfoWithMap(CountryInfo countryInfo, BoundingBox boundingBox) {
-        super(countryInfo.getCurrencies(), countryInfo.getLang(),
+        super(countryInfo.getCurrencies(), countryInfo.getLangs(),
                 countryInfo.getName(), countryInfo.getCountryCode(),
                 countryInfo.getCapital(), countryInfo.getPopulation(),
                 countryInfo.getNativeName());

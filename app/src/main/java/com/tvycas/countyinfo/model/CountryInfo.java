@@ -1,5 +1,7 @@
 package com.tvycas.countyinfo.model;
 
+import androidx.room.Ignore;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -7,20 +9,22 @@ import java.util.ArrayList;
 public class CountryInfo extends CountryBase {
 
     private String nativeName;
+    private Currency currency;
+    @Ignore
     private ArrayList<Currency> currencies;
 
     @SerializedName(value = "alpha3Code")
     private String countryCode;
 
     @SerializedName(value = "languages")
-    private ArrayList<Language> lang;
+    private ArrayList<Language> langs;
 
-    public CountryInfo(ArrayList<Currency> currencies, ArrayList<Language> lang, String name, String countryCode, String capital, int population, String nativeName) {
+    public CountryInfo(ArrayList<Currency> currencies, ArrayList<Language> langs, String name, String countryCode, String capital, int population, String nativeName) {
         super(name, capital, population);
         this.nativeName = nativeName;
         this.countryCode = countryCode;
-        this.currencies = currencies;
-        this.lang = lang;
+        this.langs = langs;
+        this.currency = currencies.get(0);
     }
 
     public String getNativeName() {
@@ -31,11 +35,15 @@ public class CountryInfo extends CountryBase {
         return countryCode;
     }
 
+    public Currency getCurrency() {
+        return currency;
+    }
+
     public ArrayList<Currency> getCurrencies() {
         return currencies;
     }
 
-    public ArrayList<Language> getLang() {
-        return lang;
+    public ArrayList<Language> getLangs() {
+        return langs;
     }
 }

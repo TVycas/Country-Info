@@ -98,7 +98,9 @@ public class Repository {
             public void onComplete(Result<CountryInfoWithMap> result) {
                 if (result instanceof Result.Success) {
                     CountryInfoWithMap countryInfoWithMap = ((Result.Success<CountryInfoWithMap>) result).data;
+
                     Log.d(TAG, "onComplete: Api response for " + countryInfoWithMap.getName() + " is successful");
+
                     countryInfoWithMapDao.insertCountry(countryInfoWithMap);
                 } else {
                     //TODO error handling
@@ -128,12 +130,14 @@ public class Repository {
 
             private Result<CountryInfoWithMap> getResultOfCountryInfoWithMap(Response<List<CountryInfo>> countryInfoResponse, Response<List<BoundingBox>> countryBoundingBoxResponse) {
                 if (countryInfoResponse.body().size() == 0 || !countryInfoResponse.isSuccessful() || !countryBoundingBoxResponse.isSuccessful()) {
-                    Log.d(TAG, "getResultOfCountryInfoWithMap: One of responses is successful - " + countryInfoResponse.code() + " " + countryBoundingBoxResponse.code());
+                    Log.d(TAG, "getResultOfCountryInfoWithMap: One of responses is NOT successful - " + countryInfoResponse.code() + " " + countryBoundingBoxResponse.code());
                     return new Result.Error<>(new Exception());
                 }
 
                 CountryInfo countryInfo = countryInfoResponse.body().get(0);
                 CountryInfoWithMap countryInfoWithMap;
+
+                Log.d(TAG, "getResultOfCountryInfoWithMap: test" + countryInfo.getCurrency());
 
                 if (countryBoundingBoxResponse.body().size() != 0) {
                     BoundingBox boundingBox = countryBoundingBoxResponse.body().get(0);

@@ -17,6 +17,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.tvycas.countyinfo.R;
 import com.tvycas.countyinfo.model.BoundingBox;
 import com.tvycas.countyinfo.model.CountryInfoWithMap;
+import com.tvycas.countyinfo.model.Language;
 import com.tvycas.countyinfo.viewmodel.CountryViewModel;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -86,10 +87,18 @@ public class CountryInfoActivity extends FragmentActivity implements OnMapReadyC
         name.setText(countryInfoWithMap.getName());
         nativeName.setText(getString(R.string.native_name, countryInfoWithMap.getNativeName()));
         population.setText(getString(R.string.population, countryInfoWithMap.getPopulation()));
-        currency.setText(getString(R.string.currency, countryInfoWithMap.getCurrencies().get(0).getName()));
-        languages.setText(getString(R.string.languages, countryInfoWithMap.getLang().get(0).getName()));
+        currency.setText(getString(R.string.currency, countryInfoWithMap.getCurrency().getName(), countryInfoWithMap.getCurrency().getSymbol()));
         countryCode.setText(getString(R.string.country_code, countryInfoWithMap.getCountryCode()));
         capital.setText(getString(R.string.capital, countryInfoWithMap.getCapital()));
+
+        StringBuilder sb = new StringBuilder();
+        for (Language lang : countryInfoWithMap.getLangs()) {
+            sb.append(lang.getName());
+            sb.append(", ");
+        }
+        sb.deleteCharAt(sb.length() - 2);
+        String langs = sb.toString();
+        languages.setText(getString(R.string.languages, langs));
     }
 
     private void moveCameraToCountry(BoundingBox boundingBox) {

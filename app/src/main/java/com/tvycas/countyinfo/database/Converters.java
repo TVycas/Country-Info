@@ -14,16 +14,16 @@ import java.util.ArrayList;
 
 public class Converters {
     @TypeConverter
-    public static ArrayList<Currency> currencyFromString(String value) {
-        Type listType = new TypeToken<ArrayList<Currency>>() {
+    public static Currency currencyFromString(String value) {
+        Type listType = new TypeToken<Currency>() {
         }.getType();
         return new Gson().fromJson(value, listType);
     }
 
     @TypeConverter
-    public static String currencyFromArrayList(ArrayList<Currency> list) {
+    public static String currencyFromObject(Currency currency) {
         Gson gson = new Gson();
-        return gson.toJson(list);
+        return gson.toJson(currency);
     }
 
     @TypeConverter

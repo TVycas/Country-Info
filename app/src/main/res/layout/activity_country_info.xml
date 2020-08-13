@@ -18,7 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_weight="0.1"
+        android:layout_marginBottom="30dp"
         android:orientation="vertical">
 
         <TextView
@@ -46,11 +46,11 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/native_name"
+            android:id="@+id/population"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:text="@string/native_name"
+            android:text="@string/population"
             android:textSize="20sp" />
 
         <TextView
@@ -61,13 +61,6 @@
             android:text="@string/currency"
             android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/population"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="@string/population"
-            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/languages"
@@ -75,6 +68,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:text="@string/languages"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/native_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/native_name"
             android:textSize="20sp" />
     </LinearLayout>
 </LinearLayout>
