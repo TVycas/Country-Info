@@ -2,4 +2,12 @@
     <string name="app_name">CountyInfo</string>
     <string name="title_activity_country_info">Map</string>
     <string name="title_activity_maps">Map</string>
+
+
+    <string name="country_code">Country code: %1$s</string>
+    <string name="capital">Capital: %1$s</string>
+    <string name="native_name">Native Name: %1$s</string>
+    <string name="currency">Currency: %1$s</string>
+    <string name="population">Population: %1$d</string>
+    <string name="languages">Language: %1$s</string>
 </resources>

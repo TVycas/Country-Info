@@ -34,7 +34,7 @@ public class CountryInfoActivity extends FragmentActivity implements OnMapReadyC
     private TextView capital;
     private TextView nativeName;
     private TextView population;
-    private TextView currencies;
+    private TextView currency;
     private TextView languages;
     private TextView countryCode;
 
@@ -51,7 +51,7 @@ public class CountryInfoActivity extends FragmentActivity implements OnMapReadyC
         countryCode = findViewById(R.id.code);
         population = findViewById(R.id.population);
         nativeName = findViewById(R.id.native_name);
-        currencies = findViewById(R.id.currency);
+        currency = findViewById(R.id.currency);
         languages = findViewById(R.id.languages);
 
 
@@ -84,12 +84,12 @@ public class CountryInfoActivity extends FragmentActivity implements OnMapReadyC
 
     private void updateTextViews(CountryInfoWithMap countryInfoWithMap) {
         name.setText(countryInfoWithMap.getName());
-        nativeName.setText(countryInfoWithMap.getNativeName());
-        population.setText(String.valueOf(countryInfoWithMap.getPopulation()));
-        currencies.setText(countryInfoWithMap.getCurrencies().get(0).getName());
-        languages.setText(countryInfoWithMap.getLang().get(0).getName());
-        countryCode.setText(countryInfoWithMap.getCountryCode());
-        capital.setText(countryInfoWithMap.getCapital());
+        nativeName.setText(getString(R.string.native_name, countryInfoWithMap.getNativeName()));
+        population.setText(getString(R.string.population, countryInfoWithMap.getPopulation()));
+        currency.setText(getString(R.string.currency, countryInfoWithMap.getCurrencies().get(0).getName()));
+        languages.setText(getString(R.string.languages, countryInfoWithMap.getLang().get(0).getName()));
+        countryCode.setText(getString(R.string.country_code, countryInfoWithMap.getCountryCode()));
+        capital.setText(getString(R.string.capital, countryInfoWithMap.getCapital()));
     }
 
     private void moveCameraToCountry(BoundingBox boundingBox) {
@@ -109,7 +109,7 @@ public class CountryInfoActivity extends FragmentActivity implements OnMapReadyC
 
         int width = getResources().getDisplayMetrics().widthPixels;
         int height = getResources().getDisplayMetrics().heightPixels;
-        int padding = (int) (width * 0.01); // offset from edges of the map 12% of screen
+        int padding = (int) (width * 0.10); // offset from edges of the map 12% of screen
         mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(mMapBoundary, width, height, padding));
     }
 
