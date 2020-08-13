@@ -21,6 +21,8 @@ import com.tvycas.countyinfo.model.CountryInfoWithMap;
 import com.tvycas.countyinfo.model.Language;
 import com.tvycas.countyinfo.viewmodel.CountryViewModel;
 
+import java.text.DecimalFormat;
+
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -85,11 +87,16 @@ public class CountryInfoActivity extends FragmentActivity implements OnMapReadyC
     private void updateTextViews(CountryInfoWithMap countryInfoWithMap) {
         name.setText(countryInfoWithMap.getName());
         nativeName.setText(getString(R.string.native_name, countryInfoWithMap.getNativeName()));
-        population.setText(getString(R.string.population, countryInfoWithMap.getPopulation()));
+        population.setText(getString(R.string.population, formatPopulation(countryInfoWithMap.getPopulation())));
         currency.setText(getString(R.string.currency, countryInfoWithMap.getCurrency().getName(), countryInfoWithMap.getCurrency().getSymbol()));
         countryCode.setText(getString(R.string.country_code, countryInfoWithMap.getCountryCode()));
         capital.setText(getString(R.string.capital, countryInfoWithMap.getCapital()));
         languages.setText(getString(R.string.languages, constructLangsString(countryInfoWithMap)));
+    }
+
+    private String formatPopulation(int population) {
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        return formatter.format(population);
     }
 
     private String constructLangsString(CountryInfoWithMap countryInfoWithMap) {
