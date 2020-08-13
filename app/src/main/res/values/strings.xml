@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">CountyInfo</string>
+    <string name="title_activity_country_info">Map</string>
+    <string name="title_activity_maps">Map</string>
 </resources>
