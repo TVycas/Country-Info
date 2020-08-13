@@ -2,6 +2,7 @@ package com.tvycas.countyinfo.ui;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
@@ -29,6 +30,14 @@ public class CountryInfoActivity extends FragmentActivity implements OnMapReadyC
     private MapView mapView;
     private CountryViewModel viewModel;
 
+    private TextView name;
+    private TextView capital;
+    private TextView nativeName;
+    private TextView population;
+    private TextView currencies;
+    private TextView languages;
+    private TextView countryCode;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +45,15 @@ public class CountryInfoActivity extends FragmentActivity implements OnMapReadyC
         setContentView(R.layout.activity_country_info);
 
         mapView = findViewById(R.id.map_view);
+
+        name = findViewById(R.id.name);
+        capital = findViewById(R.id.capital);
+        countryCode = findViewById(R.id.code);
+        population = findViewById(R.id.population);
+        nativeName = findViewById(R.id.native_name);
+        currencies = findViewById(R.id.currency);
+        languages = findViewById(R.id.languages);
+
 
         String countryName = "Country not found";
         Bundle extras = getIntent().getExtras();
@@ -58,9 +76,20 @@ public class CountryInfoActivity extends FragmentActivity implements OnMapReadyC
                 if (countryInfoWithMap != null) {
                     Log.d(TAG, "onChanged: countryWithMap" + countryInfoWithMap.getName() + " " + countryInfoWithMap.getBoundingBox());
                     moveCameraToCountry(countryInfoWithMap.getBoundingBox());
+                    updateTextViews(countryInfoWithMap);
                 }
             }
         });
+    }
+
+    private void updateTextViews(CountryInfoWithMap countryInfoWithMap) {
+        name.setText(countryInfoWithMap.getName());
+        nativeName.setText(countryInfoWithMap.getNativeName());
+        population.setText(String.valueOf(countryInfoWithMap.getPopulation()));
+        currencies.setText(countryInfoWithMap.getCurrencies().get(0).getName());
+        languages.setText(countryInfoWithMap.getLang().get(0).getName());
+        countryCode.setText(countryInfoWithMap.getCountryCode());
+        capital.setText(countryInfoWithMap.getCapital());
     }
 
     private void moveCameraToCountry(BoundingBox boundingBox) {
