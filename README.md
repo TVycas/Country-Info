@@ -27,7 +27,7 @@ following the MVVM architecture pattern.
 * Model-View-ViewModel Architecture Pattern
 
 
-### Screenshots
+## Screenshots
 
   <p align="left">
     <img src="../assets/ListView.jpg" alt="search" width="200" style="padding-left: 10px"/>
