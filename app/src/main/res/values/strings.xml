@@ -1,7 +1,6 @@
 <resources>
-    <string name="app_name">CountyInfo</string>
+    <string name="app_name">County Info</string>
     <string name="title_activity_country_info">Map</string>
-    <string name="title_activity_maps">Map</string>
 
 
     <string name="country_code">Country code: %1$s</string>
@@ -14,4 +13,5 @@
 
     <string name="capital_list_item">Capital: %1$s</string>
     <string name="population_list_item">Population: %1$s</string>
+    <string name="country_name_list_item">Country Name</string>
 </resources>

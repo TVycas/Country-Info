@@ -11,12 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:iconifiedByDefault="false"
+        android:background="@color/colorPrimaryDark"
         android:queryHint="Search for a country" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/country_list_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         tools:listitem="@layout/country_list_item" />
 
 

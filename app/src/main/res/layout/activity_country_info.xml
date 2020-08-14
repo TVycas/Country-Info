@@ -15,7 +15,7 @@
 
     <LinearLayout
         android:id="@+id/linear_iner"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginBottom="30dp"
@@ -29,13 +29,12 @@
             android:textSize="40sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/code"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="@string/country_code"
-            android:textSize="20sp" />
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="3dp"
+            android:background="?android:attr/listDivider" />
 
         <TextView
             android:id="@+id/capital"
@@ -77,5 +76,14 @@
             android:layout_marginTop="15dp"
             android:text="@string/native_name"
             android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/country_code"
+            android:textSize="20sp" />
+
     </LinearLayout>
 </LinearLayout>

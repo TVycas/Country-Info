@@ -16,7 +16,7 @@
             android:id="@+id/country_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Country Name"
+            android:text="@string/country_name_list_item"
             android:textSize="25dp"
             android:textStyle="bold" />
 
@@ -36,7 +36,6 @@
                 android:id="@+id/population"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
                 android:layout_alignParentEnd="true"
                 android:text="@string/population_list_item" />
 

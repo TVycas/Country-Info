@@ -5,7 +5,7 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.fragment.app.FragmentActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -26,7 +26,7 @@ import java.text.DecimalFormat;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class CountryInfoActivity extends FragmentActivity implements OnMapReadyCallback {
+public class CountryInfoActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private static final String TAG = CountryInfoActivity.class.getName();
     private static final String MAPVIEW_BUNDLE_KEY = "map_bundle_key";
