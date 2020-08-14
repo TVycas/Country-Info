@@ -4,6 +4,9 @@ import androidx.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * A POJO for storing the information on the bounding box of a country.
+ */
 public class BoundingBox {
     @SerializedName(value = "boundingbox")
     private Double[] boundingBox;

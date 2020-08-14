@@ -14,7 +14,6 @@ public interface CountryInfoApiService {
     @GET("all")
     Call<List<CountryBase>> getAllCountriesBaseInfo(@Query(value = "fields", encoded = true) String searchFields);
 
-    //TODO Remove the list?
     @GET("name/{fullCountryName}")
     Call<List<CountryInfo>> getFullCountryInfo(@Path("fullCountryName") String name, @Query(value = "fields", encoded = true) String searchFields);
 }

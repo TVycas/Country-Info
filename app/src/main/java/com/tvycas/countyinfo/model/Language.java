@@ -4,6 +4,9 @@ import androidx.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * A POJO for the information about the language of a country.
+ */
 public class Language {
     @SerializedName(value = "iso639_1")
     private String code2;

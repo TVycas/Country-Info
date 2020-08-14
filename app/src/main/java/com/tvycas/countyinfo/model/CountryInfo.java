@@ -6,6 +6,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
+/**
+ * A POJO for storing full information about a country without the bounding box.
+ */
 public class CountryInfo extends CountryBase {
 
     private String nativeName;
@@ -45,5 +48,19 @@ public class CountryInfo extends CountryBase {
 
     public ArrayList<Language> getLangs() {
         return langs;
+    }
+
+    /*
+    A helper method to build a String to display all Languages uses in the country
+    */
+    public String constructLangsString() {
+        StringBuilder sb = new StringBuilder();
+        for (Language lang : langs) {
+            sb.append(lang.getName());
+            sb.append(", ");
+        }
+
+        sb.deleteCharAt(sb.length() - 2);
+        return sb.toString();
     }
 }

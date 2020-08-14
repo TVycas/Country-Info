@@ -4,6 +4,9 @@ import androidx.room.Entity;
 
 import java.util.ArrayList;
 
+/**
+ * A POJO for storing full information about a country with the bounding box.
+ */
 @Entity(tableName = "country_info")
 public class CountryInfoWithMap extends CountryInfo {
     BoundingBox boundingBox;

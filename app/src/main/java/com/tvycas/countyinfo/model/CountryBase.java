@@ -4,6 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.text.DecimalFormat;
+
+/**
+ * A POJO for storing the basic information about a country.
+ */
 @Entity(tableName = "country_base")
 public class CountryBase {
 
@@ -30,5 +35,13 @@ public class CountryBase {
 
     public int getPopulation() {
         return population;
+    }
+
+    /*
+    A helper method to format the population integer to a more human-readable form
+    */
+    public String formatPopulation() {
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        return formatter.format(population);
     }
 }

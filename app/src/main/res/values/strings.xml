@@ -14,4 +14,5 @@
     <string name="capital_list_item">Capital: %1$s</string>
     <string name="population_list_item">Population: %1$s</string>
     <string name="country_name_list_item">Country Name</string>
+    <string name="country_unavailable">Country unavailable</string>
 </resources>

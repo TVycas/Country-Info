@@ -1,7 +1,5 @@
 package com.tvycas.countyinfo.viewmodel;
 
-//TODO rename
-
 import androidx.hilt.lifecycle.ViewModelInject;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
@@ -14,16 +12,17 @@ import java.util.List;
 
 
 public class CountryViewModel extends ViewModel {
-    private static final String TAG = CountryViewModel.class.getName();
-    Repository repository;
+    private Repository repository;
+    private LiveData<List<CountryBase>> allCountries;
 
     @ViewModelInject
     public CountryViewModel(Repository repository) {
         this.repository = repository;
+        this.allCountries = repository.getAllCountries();
     }
 
     public LiveData<List<CountryBase>> getAllCountries() {
-        return repository.getAllCountries();
+        return allCountries;
     }
 
     public LiveData<CountryInfoWithMap> getCountryInfoWithMap(String name) {

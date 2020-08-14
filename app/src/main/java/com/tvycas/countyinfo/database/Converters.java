@@ -11,7 +11,9 @@ import com.tvycas.countyinfo.model.Language;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-
+/**
+ * Class for different Room database converters.
+ */
 public class Converters {
     @TypeConverter
     public static Currency currencyFromString(String value) {

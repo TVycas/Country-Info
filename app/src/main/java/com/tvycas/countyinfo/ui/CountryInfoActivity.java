@@ -18,18 +18,17 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.tvycas.countyinfo.R;
 import com.tvycas.countyinfo.model.BoundingBox;
 import com.tvycas.countyinfo.model.CountryInfoWithMap;
-import com.tvycas.countyinfo.model.Language;
 import com.tvycas.countyinfo.viewmodel.CountryViewModel;
 
-import java.text.DecimalFormat;
-
 import dagger.hilt.android.AndroidEntryPoint;
+
+import static com.tvycas.countyinfo.util.Constants.COUNTRY_NAME_BUNDLE_KEY;
+import static com.tvycas.countyinfo.util.Constants.MAPVIEW_BUNDLE_KEY;
 
 @AndroidEntryPoint
 public class CountryInfoActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private static final String TAG = CountryInfoActivity.class.getName();
-    private static final String MAPVIEW_BUNDLE_KEY = "map_bundle_key";
     private GoogleMap mMap;
     private MapView mapView;
     private CountryViewModel viewModel;
@@ -62,55 +61,55 @@ public class CountryInfoActivity extends AppCompatActivity implements OnMapReady
         String countryName = "Country not found";
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            countryName = extras.getString("country_name"); // retrieve the data using keyName
+            countryName = extras.getString(COUNTRY_NAME_BUNDLE_KEY); // retrieve the country name using the bundle
         }
 
         initGoogleMap(savedInstanceState);
 
         viewModel = new ViewModelProvider(this).get(CountryViewModel.class);
+
         observeCountryInfo(countryName);
     }
 
+    /**
+     * Set up the Activity to observe and display information about a country.
+     *
+     * @param name The name of the country to get the info of.
+     */
     private void observeCountryInfo(String name) {
         viewModel.getCountryInfoWithMap(name).observe(this, new Observer<CountryInfoWithMap>() {
             @Override
             public void onChanged(CountryInfoWithMap countryInfoWithMap) {
                 if (countryInfoWithMap != null) {
-                    Log.d(TAG, "onChanged: countryWithMap" + countryInfoWithMap.getName() + " " + countryInfoWithMap.getBoundingBox());
-                    moveCameraToCountry(countryInfoWithMap.getBoundingBox());
+                    Log.d(TAG, "onChanged: countryWithMap: " + countryInfoWithMap.getName() + "; Bounding box: " + countryInfoWithMap.getBoundingBox());
+                    moveCameraToBoundingBox(countryInfoWithMap.getBoundingBox());
                     updateTextViews(countryInfoWithMap);
                 }
             }
         });
     }
 
+    /**
+     * Updates the TextViews of the Activity using the CountryInfoWithMap POJO.
+     *
+     * @param countryInfoWithMap The CountryInfoWithMap to get the information from to update the TextViews.
+     */
     private void updateTextViews(CountryInfoWithMap countryInfoWithMap) {
         name.setText(countryInfoWithMap.getName());
         nativeName.setText(getString(R.string.native_name, countryInfoWithMap.getNativeName()));
-        population.setText(getString(R.string.population, formatPopulation(countryInfoWithMap.getPopulation())));
+        population.setText(getString(R.string.population, countryInfoWithMap.formatPopulation()));
         currency.setText(getString(R.string.currency, countryInfoWithMap.getCurrency().getName(), countryInfoWithMap.getCurrency().getSymbol()));
         countryCode.setText(getString(R.string.country_code, countryInfoWithMap.getCountryCode()));
         capital.setText(getString(R.string.capital, countryInfoWithMap.getCapital()));
-        languages.setText(getString(R.string.languages, constructLangsString(countryInfoWithMap)));
+        languages.setText(getString(R.string.languages, countryInfoWithMap.constructLangsString()));
     }
 
-    public static String formatPopulation(int population) {
-        DecimalFormat formatter = new DecimalFormat("#,###");
-        return formatter.format(population);
-    }
-
-    private String constructLangsString(CountryInfoWithMap countryInfoWithMap) {
-        StringBuilder sb = new StringBuilder();
-        for (Language lang : countryInfoWithMap.getLangs()) {
-            sb.append(lang.getName());
-            sb.append(", ");
-        }
-
-        sb.deleteCharAt(sb.length() - 2);
-        return sb.toString();
-    }
-
-    private void moveCameraToCountry(BoundingBox boundingBox) {
+    /**
+     * Moves the camera of the GoogleMap to the location defined by the BoundingBox.
+     *
+     * @param boundingBox The bounding box to set the camera to.
+     */
+    private void moveCameraToBoundingBox(BoundingBox boundingBox) {
         if (boundingBox != null) {
             //Set the camera of the map
             double minLat = boundingBox.getMinLat();
@@ -126,15 +125,22 @@ public class CountryInfoActivity extends AppCompatActivity implements OnMapReady
                     southWest
             );
 
+            // Calculate the padding
             int width = getResources().getDisplayMetrics().widthPixels;
             int height = getResources().getDisplayMetrics().heightPixels;
-            int padding = (int) (width * 0.10); // offset from edges of the map 12% of screen
+            int padding = (int) (width * 0.10); // offset from edges of the map 10% of screen
+
             mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(mMapBoundary, width, height, padding));
         } else {
             Toast.makeText(this, R.string.no_map_info, Toast.LENGTH_LONG).show();
         }
     }
 
+    /**
+     * Initiate the google map using the bundle, and setting the onMapReadyCallback to this class.
+     *
+     * @param savedInstanceState A bundle object to get the state of the map from.
+     */
     private void initGoogleMap(Bundle savedInstanceState) {
         Bundle mapViewBundle = null;
         if (savedInstanceState != null) {

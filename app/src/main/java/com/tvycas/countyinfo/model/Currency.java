@@ -2,6 +2,9 @@ package com.tvycas.countyinfo.model;
 
 import androidx.annotation.NonNull;
 
+/**
+ * A POJO for the information about the currency of a country.
+ */
 public class Currency {
     private String code;
     private String name;

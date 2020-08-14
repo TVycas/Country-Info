@@ -16,6 +16,9 @@ public interface CountryBaseDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertCountry(CountryBase countryBase);
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertAllCountries(List<CountryBase> countryList);
+
     @Query("SELECT * FROM country_base")
     LiveData<List<CountryBase>> getAllCountries();
 }
