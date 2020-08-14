@@ -11,4 +11,7 @@
     <string name="population">Population: %1$s</string>
     <string name="languages">Language(s): %1$s</string>
     <string name="no_map_info">No location information :(</string>
+
+    <string name="capital_list_item">Capital: %1$s</string>
+    <string name="population_list_item">Population: %1$s</string>
 </resources>

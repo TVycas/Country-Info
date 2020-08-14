@@ -17,6 +17,8 @@ import com.tvycas.countyinfo.model.CountryBase;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.tvycas.countyinfo.ui.CountryInfoActivity.formatPopulation;
+
 public class CountryListAdapter extends RecyclerView.Adapter<CountryListAdapter.CountryViewHolder> implements Filterable {
     private LayoutInflater inflater;
     private List<CountryBase> countriesToDisplay;
@@ -71,10 +73,11 @@ public class CountryListAdapter extends RecyclerView.Adapter<CountryListAdapter.
     @Override
     public void onBindViewHolder(@NonNull CountryListAdapter.CountryViewHolder holder, int position) {
         if (countriesToDisplay != null) {
+            Context context = holder.itemView.getContext();
             CountryBase currentCountry = countriesToDisplay.get(position);
             holder.nameTextView.setText(currentCountry.getName());
-            holder.capitalTextView.setText(currentCountry.getCapital());
-            holder.popTextView.setText(String.valueOf(currentCountry.getPopulation()));
+            holder.capitalTextView.setText(context.getString(R.string.capital_list_item, currentCountry.getCapital()));
+            holder.popTextView.setText(context.getString(R.string.population_list_item, formatPopulation(currentCountry.getPopulation())));
 
         } else {
             holder.nameTextView.setText("Country unavailable");

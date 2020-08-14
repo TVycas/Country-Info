@@ -94,7 +94,7 @@ public class CountryInfoActivity extends FragmentActivity implements OnMapReadyC
         languages.setText(getString(R.string.languages, constructLangsString(countryInfoWithMap)));
     }
 
-    private String formatPopulation(int population) {
+    public static String formatPopulation(int population) {
         DecimalFormat formatter = new DecimalFormat("#,###");
         return formatter.format(population);
     }
