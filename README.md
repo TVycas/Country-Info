@@ -11,7 +11,7 @@ The app uses [Retrofit](https://square.github.io/retrofit/) client
 together with [Gson](https://github.com/google/gson) to make calls to
 two different RESTful API services -
 [REST countries](https://restcountries.eu/) and
-[Nominatim](https://nominatim.openstreetmap.org/) - and gather
+[Nominatim](https://nominatim.openstreetmap.org/) - to gather
 information about various countries. It keeps this information using a
 Room database and uses LiveData objects to display it to the user.
 Additionally, the app uses Hilt for dependency injection and was built
@@ -27,7 +27,7 @@ following the MVVM architecture pattern.
 * Model-View-ViewModel Architecture Pattern
 
 
-### Screenshots
+## Screenshots
 
   <p align="left">
     <img src="../assets/ListView.jpg" alt="search" width="200" style="padding-left: 10px"/>
