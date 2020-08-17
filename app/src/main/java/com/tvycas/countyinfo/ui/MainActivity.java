@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements CountryListAdapte
     private CountryListAdapter countryListAdapter;
     private RecyclerView recyclerView;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,5 +102,9 @@ public class MainActivity extends AppCompatActivity implements CountryListAdapte
         Intent intent = new Intent(this, CountryInfoActivity.class);
         intent.putExtra(COUNTRY_NAME_BUNDLE_KEY, countryList.get(position).getName());
         startActivity(intent);
+    }
+
+    public CountryListAdapter getCountryListAdapter() {
+        return countryListAdapter;
     }
 }

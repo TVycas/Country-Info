@@ -5,7 +5,7 @@
 
     <string name="country_code">Country code: %1$s</string>
     <string name="capital">Capital: %1$s</string>
-    <string name="native_name">Native Name: %1$s</string>
+    <string name="native_name">Native name: %1$s</string>
     <string name="currency">Currency: %1$s (Symbol: %2$s)</string>
     <string name="population">Population: %1$s</string>
     <string name="languages">Language(s): %1$s</string>
@@ -13,6 +13,6 @@
 
     <string name="capital_list_item">Capital: %1$s</string>
     <string name="population_list_item">Population: %1$s</string>
-    <string name="country_name_list_item">Country Name</string>
+    <string name="country_name_list_item">Country name</string>
     <string name="country_unavailable">Country unavailable</string>
 </resources>

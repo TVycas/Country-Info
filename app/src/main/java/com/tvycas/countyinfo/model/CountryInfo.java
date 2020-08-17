@@ -60,7 +60,7 @@ public class CountryInfo extends CountryBase {
             sb.append(", ");
         }
 
-        sb.deleteCharAt(sb.length() - 2);
+        sb.delete(sb.length() - 2, sb.length());
         return sb.toString();
     }
 }
