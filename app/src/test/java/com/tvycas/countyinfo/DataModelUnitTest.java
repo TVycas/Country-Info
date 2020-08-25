@@ -1,6 +1,8 @@
 package com.tvycas.countyinfo;
 
 
+import androidx.test.filters.SmallTest;
+
 import com.tvycas.countyinfo.model.CountryBase;
 import com.tvycas.countyinfo.model.CountryInfo;
 import com.tvycas.countyinfo.model.Currency;
@@ -12,6 +14,7 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 
+@SmallTest
 public class DataModelUnitTest {
 
     @Test
@@ -40,12 +43,12 @@ public class DataModelUnitTest {
 
     @Test
     public void countryInfo_3LanguageFormat() {
-        ArrayList<Language> singleLanguage = new ArrayList<>();
-        singleLanguage.add(new Language("TestLang1"));
-        singleLanguage.add(new Language("TestLang2"));
-        singleLanguage.add(new Language("TestLang3"));
+        ArrayList<Language> threeLanguages = new ArrayList<>();
+        threeLanguages.add(new Language("TestLang1"));
+        threeLanguages.add(new Language("TestLang2"));
+        threeLanguages.add(new Language("TestLang3"));
 
-        CountryInfo countryInfo = createCountryInfoWithLangsArrayList(singleLanguage);
+        CountryInfo countryInfo = createCountryInfoWithLangsArrayList(threeLanguages);
 
         String correctOutput = "TestLang1, TestLang2, TestLang3";
         assertEquals(correctOutput, countryInfo.constructLangsString());
